@@ -47,3 +47,33 @@ class Tree:
                     latest_children.append(n)
 
             current_nodes = list(latest_children)
+
+    def nodes_breadth_first(self):
+        queue = [self.root]
+        visited = []
+
+        while len(queue) > 0:
+            visited.append(queue[0])
+
+            if queue[0].children != None:
+                for node_child in queue[0].children:
+                    queue.append(node_child)
+
+            queue.remove(queue[0])
+
+        return visited
+
+    def nodes_depth_first(self):
+        stack = [self.root]
+        visited = []
+
+        while len(stack) > 0:
+            visited.append(stack[0])
+
+            if stack[0].children != None:
+                for child in stack[0].children:
+                    stack.insert(1, child)
+
+            stack.remove(stack[0])
+
+        return visited

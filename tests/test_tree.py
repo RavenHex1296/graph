@@ -1,7 +1,7 @@
 import sys
 sys.path.append('src')
 from tree import Tree
-
+'''
 edges = [('a', 'c'), ('e', 'g'), ('e', 'i'), ('e', 'a'), ('g', 'b'), ('a', 'd'), ('d', 'f'), ('f', 'h'), ('d', 'j'), ('c', 'k')]
 tree = Tree(edges)
 tree.build_from_edges()
@@ -52,4 +52,18 @@ print("PASSED")
 
 print("Asserting the children of h")
 assert [node.value for node in tree.root.children[2].children[1].children[0].children[0].children] == [], "Incorrect output"
+print("PASSED")
+'''
+edges = [('a', 'c'), ('e', 'g'), ('e', 'i'), ('e', 'a'), ('d', 'b'), ('a', 'd'), ('d', 'f'), ('f', 'h'), ('d', 'j'), ('d', 'k')]
+tree = Tree(edges)
+tree.build_from_edges()
+
+print("Asserting nodes_breadth_first")
+nodes = tree.nodes_breadth_first()
+assert [node.value for node in nodes] == ['e', 'g', 'i', 'a', 'c', 'd', 'b', 'f', 'j', 'k', 'h'], "Incorrect answer"
+print("PASSED")
+
+print("Asserting nodes_depth_first")
+nodes = tree.nodes_depth_first()
+assert [node.value for node in nodes] == ['e', 'a', 'd', 'k', 'j', 'f', 'h', 'b', 'c', 'i', 'g'], "Incorrect answer"
 print("PASSED")

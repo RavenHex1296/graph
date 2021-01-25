@@ -1,27 +1,30 @@
 class Node:
-    def __init__(self, parent, value, children):
+    def __init__(self, parent, value, index, children):
         self.parent = parent
         self.value = value
+        self.index = index
         self.children = children
 
 
 class Tree:
-    def __init__(self, edges):
+    def __init__(self, edges, nodes):
         self.edges = edges
-        self.root = Node(None, self.get_root(self.edges), None)
+        self.values = nodes
+        root_node_value = self.values[self.get_root(self.edges)]
+        self.root = Node(None, root_node_value, self.get_root(self.edges), None)
 
-    def get_children(self, node, tree):
+    def get_children(self, indice, tree):
         children = []
 
         for edge in tree:
-            if edge[0] == node:
+            if edge[0] == indice:
                 children.append(edge[1])
 
         return children
 
-    def get_parents(self, node, tree):
+    def get_parents(self, indice, tree):
         for edge in tree:
-            if edge[1] == node:
+            if edge[1] == indice:
                 return edge[0]
 
     def get_root(self, tree):
@@ -36,10 +39,10 @@ class Tree:
             latest_children = []
 
             for node in current_nodes:
-                children = self.get_children(node.value, self.edges)
+                children = self.get_children(node.index, self.edges)
 
                 for n in range(len(children)):
-                    children[n] = Node(node, children[n], None)
+                    children[n] = Node(node, self.values[children[n]], children[n], None)
 
                 node.children = children
 

@@ -14,12 +14,7 @@ class Tree:
         self.root = Node(None, root_node_value, self.get_root(self.edges), None)
 
     def get_children(self, indice, tree):
-        children = []
-
-        for edge in tree:
-            if edge[0] == indice:
-                children.append(edge[1])
-
+        children = [edge[1] for edge in tree if edge[0] == indice]
         return children
 
     def get_parents(self, indice, tree):

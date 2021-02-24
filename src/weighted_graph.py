@@ -1,3 +1,8 @@
+import sys
+sys.path.append('src')
+from graph import *
+
+
 class Node():
     def __init__(self, index, value=None):
         self.index = index
@@ -6,6 +11,7 @@ class Node():
         self.previous = None
         self.d_value = 9999999999
 
+
 class WeightedGraph():
     def __init__(self, weights, values):
         self.weights = weights
@@ -13,22 +19,22 @@ class WeightedGraph():
         self.edges = [key for key in self.weights]
         indices = []
 
-        for pair in self.edges:
-            indices.append(pair[0])
-            indices.append(pair[1])
+        for edge in self.edges:
+            indices.append(edge[0])
+            indices.append(edge[1])
 
         self.nodes = [Node(n, self.values[n]) for n in range(max(indices) + 1)]
 
     def build_from_edges(self):
-        for pair in self.edges: 
-            self.nodes[pair[0]].neighbors.append(self.nodes[pair[1]])
-            self.nodes[pair[1]].neighbors.append(self.nodes[pair[0]])
-    
+        for edge in self.edges:
+            self.nodes[edge[0]].neighbors.append(self.nodes[edge[1]])
+            self.nodes[edge[1]].neighbors.append(self.nodes[edge[0]])
+
     def edge_weight(self, starting_node_index, next_node_index):
         for edge in self.weights:
             if starting_node_index.index in edge and next_node_index.index in edge:
                 return self.weights[edge]
-    
+
     def setup(self, starting_node_index):
         nodes = [node for node in self.nodes]
         self.nodes[starting_node_index].d_value = 0
@@ -67,3 +73,15 @@ class WeightedGraph():
             return False
 
         return self.nodes[ending_node_index].d_value
+
+    def calc_shortest_path(self, start_node, end_node):
+        self.setup(start_node)
+        shortest_path_tree_edges = []
+
+        for (a, b) in self.edges:
+            if self.nodes[b].d_value - self.nodes[a].d_value == self.weights[(a, b)]:
+                shortest_path_tree_edges.append((a, b))
+
+        shortest_path_tree = Graph(shortest_path_tree_edges)
+        shortest_path_tree.build_from_edges()
+        return shortest_path_tree.calc_shortest_path(start_node, end_node)
